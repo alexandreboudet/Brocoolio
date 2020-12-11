@@ -7,4 +7,4 @@ def index(request):
     reponse = {
         'texte':'oui',
     }
-    return render(request, 'brunomenan.html', reponse)
+    return render(request, 'index2.html', reponse)
