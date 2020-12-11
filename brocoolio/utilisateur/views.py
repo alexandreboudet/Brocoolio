@@ -5,6 +5,6 @@ from django.shortcuts import render
 
 def index(request):
     reponse = {
-        'texte':'weeb',
+        'texte':'oui',
     }
-    return render(request, 'index.html', reponse)
+    return render(request, 'brunomenan.html', reponse)
