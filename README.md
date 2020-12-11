@@ -1,28 +1,40 @@
 # Brocoolio
 
+> Rédigé par Alexandre BOUDET  
+> Le 11/12/2020
 
+## Environnement virtuel
 
+    $ virtualenv -p python3 venv 
+    $ source venv/bin/activate
 
+## Installation des dépendances Python
 
-## VenV
-
->`virtualenv -p python3 venv`  
->`source venv/bin/activate`
-
-
-
-## Installation
-Installer toutes les dépendances python :
-
-> `pip3 install -r requirements.txt`
-
+    $ pip3 install -r requirements.txt
 
 ## Base de données
-> `sudo apt install postgresql`  
 
-> `sudo service postgresql start`  
+### Installation de Postgresql sur le système
 
-> `sudo -i -u postgres`  
-> `createdb Brocoolio`
+    $ sudo apt install postgresql 
 
-> `psql Brocoolio < db_psql.sql`
+
+### Démarrage de Postgresql
+
+    $ sudo service postgresql start  
+
+### Connexion à postgresql en tant que superuser
+
+    $ sudo -i -u postgres  
+
+### Entrer dans le prompt psql et on créer un User et une Database
+
+    $ psql  
+    postgres=# CREATE USER Brocoolio  
+    postgres=# ALTER ROLE Brocoolio WITH CREATEDB;  
+    postgres=# CREATE DATABASE Brocoolio OWNER Brocoolio;  
+    postgres=# ALTER USER Brocoolio WITH ENCRYPTED PASSWORD 'brocoolio';
+
+### Importation de la Database
+
+    $ psql Brocoolio < db_psql.sql
