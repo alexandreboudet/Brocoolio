@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from .forms import InscriptionForm,ConnexionForm
 from .models import Utilisateur
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 import hashlib
 
 # Create your views here.
@@ -23,11 +23,9 @@ def connexion(request):
             if user is not None:
                 login(request, user)
                 print('connexion réussi !')
-                id = request.session.get('_auth_user_id')
 
 
-                utilisateur = Utilisateur.objects.all().filter(idUser=id)
-                print(utilisateur[0].img_profil)
+                return redirect(profil)
             else:
                 print('connexion pas réussi !')
         else:
@@ -40,6 +38,16 @@ def connexion(request):
         'connexionform':connexionform,
     }
     return render(request, 'connexion.html', reponse)
+
+def deconnexion(request):
+    logout(request)
+    return redirect(connexion)
+
+def suppression(request):
+    id = request.session.get('_auth_user_id')
+    u = User.objects.get(id=id)
+    testUser = u.delete()
+    return redirect(inscription)
 
 def inscription(request):
     if request.method == 'POST':
@@ -66,3 +74,13 @@ def inscription(request):
         'inscriptionform':inscriptionform,
     }
     return render(request, 'inscription.html', reponse)
+
+def profil(request):
+    response = {}
+    if request.session is not None:
+        id = request.session.get('_auth_user_id')
+        utilisateur = Utilisateur.objects.all().filter(idUser=id)
+        response['utilisateur']=utilisateur
+    else:
+        print('plus de session')
+    return render(request, 'profil.html', response)
