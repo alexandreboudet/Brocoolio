@@ -1,0 +1,9 @@
+<form action="" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ inscriptionform.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if inscriptionform.is_valid %}
+  Le compte a été crée avec succès !
+{% endif %}

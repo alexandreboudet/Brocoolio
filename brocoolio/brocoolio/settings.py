@@ -25,6 +25,10 @@ SECRET_KEY = 'pom(1l*0s23^0p)uw*)%s$#o&+fmr#cyo&dhagqje##ig7!*9m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 ALLOWED_HOSTS = []
 
 
@@ -79,8 +83,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Brocoolio',
-        'USER': 'Brocoolio',
-        'PASSWORD': 'brocoolio'
     }
 }
 
