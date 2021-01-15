@@ -1,3 +1,5 @@
+{% extends "navbar.html" %}
+
 <form action="" enctype="multipart/form-data" method="post">
     {% csrf_token %}
     {{ inscriptionform.as_p }}
