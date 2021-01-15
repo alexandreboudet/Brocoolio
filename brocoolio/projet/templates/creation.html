@@ -1,0 +1,11 @@
+<form action="" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{creationprojetform.media}}
+    {{ creationprojetform.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if creationprojetform.is_valid %}
+  Le formulaire est valide !
+
+{% endif %}
