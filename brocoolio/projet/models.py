@@ -6,8 +6,9 @@ from utilisateur.models import Utilisateur
 class Projet(models.Model):
     utilisateur = models.ForeignKey(Utilisateur,on_delete=models.CASCADE)
     titre = models.CharField(max_length=100)
-    photo = models.ImageField()
+    photo = models.ImageField(null=True,blank=True,upload_to="images/projet/")
     description = models.TextField()
+    cout_estime = models.FloatField(default=None)
     estValide = models.BooleanField()
     date_creation = models.DateField()
     date_validation = models.DateField()

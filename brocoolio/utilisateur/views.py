@@ -47,6 +47,8 @@ def suppression(request):
     id = request.session.get('_auth_user_id')
     u = User.objects.get(id=id)
     testUser = u.delete()
+    logout(request)
+
     return redirect(inscription)
 
 def inscription(request):
