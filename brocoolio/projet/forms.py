@@ -5,3 +5,6 @@ class CreationProjetForm(forms.Form):
     photo = forms.ImageField(label='Image du projet')
     description = forms.CharField(label='Résumé du projet',widget=forms.Textarea)
     cout_estime = forms.FloatField(label='Coût estimé')
+
+class CommentaireForm(forms.Form):
+    commentaire = forms.CharField(label='Commentaire',widget=forms.Textarea)

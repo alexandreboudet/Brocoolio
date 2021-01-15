@@ -1,5 +1,20 @@
-{{projet.0.titre}}<br>
-<img src="/media/{{projet.0.photo}}" alt="">
-{{projet.0.description}}<br>
-{{projet.0.date_creation}}<br>
-{{projet.0.cout_estime}}<br>
+{{projet.titre}}<br>
+<img src="/media/{{projet.photo}}" alt="">
+{{projet.description}}<br>
+{{projet.date_creation}}<br>
+{{projet.cout_estime}}<br>
+
+
+{% for commentaire in commentaires %}
+_____________________________________<br>
+  Auteur :{{commentaire.utilisateur.idUser.username}}<br>
+  Commentaire :{{commentaire.commentaire}}<br>
+{% endfor %}
+
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ commentaireform.as_p }}
+    <input type="submit" value="Submit">
+</form>

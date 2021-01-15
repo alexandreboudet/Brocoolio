@@ -13,3 +13,4 @@ class Utilisateur(models.Model):
     karma_porteur = models.IntegerField()
     karma_evaluateur = models.IntegerField()
     karma_financeur = models.IntegerField()
+    
