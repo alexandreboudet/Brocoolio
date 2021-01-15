@@ -1,0 +1,18 @@
+version: "3"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=brocoolio
+      - POSTGRES_USER=brocoolio
+      - POSTGRES_PASSWORD=brocoolio
+  web: 
+    build: . 
+    volumes:
+      - .:/brocoolio
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+

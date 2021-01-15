@@ -1,40 +1,43 @@
 # Brocoolio
 
-> Rédigé par Alexandre BOUDET  
-> Le 11/12/2020
+> Équipe Brocoolio
+> - Alexandre Boudet
+> - Julien Douet
+> - Thomas Périchet
+> - Younes Rafiki
 
-## Environnement virtuel
+----------------------------------------------------------------------
 
-    $ virtualenv -p python3 venv 
-    $ source venv/bin/activate
+## Prérequis
 
-## Installation des dépendances Python
+Vérifier que vous avez la dernière version de Docker et Docker Compose d'installée sur votre machine : 
 
-    $ pip3 install -r requirements.txt
+    $ docker --version
+    Docker version 18.09.1, build 4c52b90
 
-## Base de données
+    $ docker-compose --version
+    docker-compose version 1.27.4, build 40524192
 
-### Installation de Postgresql sur le système
+Si vous n'avez pas Docker et/ou Docker Compose d'installés veuillez suivre ces tutoriels :
 
-    $ sudo apt install postgresql 
+### Docker
 
+https://docs.docker.com/engine/install/ubuntu/
 
-### Démarrage de Postgresql
+### Docker Compose
 
-    $ sudo service postgresql start  
+https://docs.docker.com/compose/install/
 
-### Connexion à postgresql en tant que superuser
+----------------------------------------------------------------------
 
-    $ sudo -i -u postgres  
+## Lancer Brocoolio localement
 
-### Entrer dans le prompt psql et on créer un User et une Database
+Se déplacer dans le dossier où se trouve le `docker-compose.yml`
 
-    $ psql  
-    postgres=# CREATE USER Brocoolio  
-    postgres=# ALTER ROLE Brocoolio WITH CREATEDB;  
-    postgres=# CREATE DATABASE Brocoolio OWNER Brocoolio;  
-    postgres=# ALTER USER Brocoolio WITH ENCRYPTED PASSWORD 'brocoolio';
+Ensuite lancer la commande suivante : 
+    
+    $ sudo docker-compose up --build
 
-### Importation de la Database
-
-    $ psql Brocoolio < db_psql.sql
+Ensuite aller à l'adresse suivante : 
+    
+http://0.0.0.0:8000/utilisateur/connexion

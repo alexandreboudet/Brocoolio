@@ -29,7 +29,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -82,7 +82,11 @@ WSGI_APPLICATION = 'brocoolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Brocoolio',
+        'NAME': 'brocoolio',
+		'USER': 'brocoolio',
+		'PASSWORD': 'brocoolio',
+		'HOST': 'db',
+		'PORT': '5432',
     }
 }
 
