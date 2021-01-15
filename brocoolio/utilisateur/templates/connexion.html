@@ -1,8 +1,39 @@
-<form action="" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    {{ connexionform.as_p }}
-    <input type="submit" value="Submit">
-</form>
-<a href="/utilisateur/inscription">Inscription</a>
+{% extends "navbar.html" %}
+{% block content %}
+{%load static %}
 
-{{session}}
+<main class = "form-signin">
+    <div class="d-flex justify-content-center">
+        <form action="" enctype="multipart/form-data" method="post">
+            <div class = "d-flex justify-content-center">
+                <h1>Connexion</h1>
+            </div>
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Pseudo ou Adresse mail</label>
+                <div>
+                    {{ connexionform.authentification }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div>
+                    {{connexionform.mdp}}
+                </div>
+            </div>
+            <div class = "d-flex justify-content-center">
+                <input type="submit" value="Submit" class="btn btn-success" style="background-color:forestgreen">
+            </div>
+        
+            Pas encore inscrit ? -><a href="/utilisateur/inscription" > Inscription</a>
+        </form>
+        
+
+    </div>
+
+
+
+</main>
+
+{% endblock %}

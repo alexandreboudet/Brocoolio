@@ -1,3 +1,5 @@
+{% extends "navbar.html" %}
+{% block content %}
 {% load static %}
 {{utilisateur.0.idUser.username}}
 {{utilisateur.0.idUser.email}}
@@ -7,3 +9,7 @@
 
 <a href="/utilisateur/deconnexion">Deconnexion</a>
 <a href="/utilisateur/suppression">Suppression de compte</a>
+
+
+
+{% endblock %}
