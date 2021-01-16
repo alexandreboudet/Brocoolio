@@ -73,10 +73,11 @@ body {
                     <h5 class="mb-0">Dernier projets crées</h5><a href="#" class="btn btn-link text-muted">Show all</a>
                 </div>
                 <div class="row">
+                    {% for projet in listProjet %}
                         <div class="card rounded shadow-sm border-0">
-                            <div class="card-body p-4"><img src="https://images.unsplash.com/photo-1469594292607-7bd90f8d3ba4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="" class="img-fluid d-block mx-auto mb-3">
-                                <h5> <a href="#" class="text-dark">TITRE PROJET</a></h5>
-                                <p class="small text-muted font-italic">Description projet</p>
+                            <div class="card-body p-4"><img src="{{projet.image}}" alt="" class="img-fluid d-block mx-auto mb-3">
+                                <h5> <a href="#" class="text-dark">{{projet.nom}}</a></h5>
+                                <p class="small text-muted font-italic">{{projet.date_creation}}</p>
                                 <ul class="list-inline small">
                                     <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
                                     <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
@@ -86,6 +87,7 @@ body {
                                 </ul>
                             </div>
                         </div>
+                    {% endfor %}
 
                         <div class="card rounded shadow-sm border-0">
                             <div class="card-body p-4"><img src="https://images.unsplash.com/photo-1493571716545-b559a19edd14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="" class="img-fluid d-block mx-auto mb-3">
