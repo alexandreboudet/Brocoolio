@@ -2,8 +2,8 @@ from django.shortcuts import render
 from .models import Projet,Commentaire
 from utilisateur.models import Utilisateur
 from .forms import CreationProjetForm,CommentaireForm
+from datetime import date
 # Create your views here.
-
 
 def index(request):
     reponse = {
@@ -30,6 +30,8 @@ def creation(request):
             photo.name = utilisateur.idUser.username
             Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation='1998-12-30',date_validation='2001-06-18')
 
+            todayDate = date.today().strftime("%Y-%m-%d")
+            o = Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
