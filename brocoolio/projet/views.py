@@ -32,7 +32,7 @@ def creation(request):
             if(photo is not None):
                 photo.name = utilisateur.idUser.username
             
-            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo="images/projet/test.png",description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
+            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
 
             
         else:
@@ -114,3 +114,4 @@ def mieuxevalues(request):
     else:
         print('plus de session')
     return render(request, 'mieuxevalues.html', response)
+
