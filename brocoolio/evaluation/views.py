@@ -18,7 +18,7 @@ def projet(request,id_projet):
         raise Http404("Le projet n'existe pas "+str(id_projet))
 
     if(projet[0].utilisateur_id == id_projet):
-        raise Http404("Vous ne pouvez pas évaluer votre propre projet ")
+        raise Http404("Vous ne pouvez pas évaluer votre propre projet "+str(id_projet))
 
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
@@ -59,13 +59,12 @@ def listeEvaluationProjet(request,id_projet):
     response['listeEvaluationProjet']=listeEvaluationProjet
     return render(request,'listeEvaluationProjet.html',response)
 
-
 def listeProjetAEvaluer(request):
     response = {}
     if request.session is not None:
         id = request.user.id
         listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
-        
+
         response['listProjet']=listProjet
     else:
         print('plus de session')
