@@ -42,11 +42,7 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
-<<<<<<< HEAD
     return HttpResponseRedirect("/projet/accueil")
-=======
-    return redirect(connexion)
->>>>>>> back-younes
 
 def suppression(request):
     id = request.user.id
@@ -130,7 +126,6 @@ def editionprofil(request):
         return render(request, 'editionprofil.html', reponse)
     else:
         return redirect(connexion)
-<<<<<<< HEAD
 
 
 
@@ -152,5 +147,3 @@ def profilprojets(request):
         return render(request, 'profilprojets.html', response)
     else:
         return redirect(connexion)
-=======
->>>>>>> back-younes
