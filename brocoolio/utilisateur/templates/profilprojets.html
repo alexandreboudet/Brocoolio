@@ -38,7 +38,6 @@ body {
             <div class="px-4 pt-0 pb-4 cover">
                 <div class="media align-items-end profile-head">
                     <div class="profile mr-3"><img src="/static/img/{{utilisateur.img_profil}}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                        <a href="/utilisateur/editionprofil" class="btn btn-outline-dark btn-sm btn-block">Editer votre profil</a>
                     </div>
                     <div class="media-body mb-5 text-white">
                         <h4 class="mt-0 mb-0">{{utilisateur.idUser.username}}</h4>
@@ -60,21 +59,12 @@ body {
                     </li>
                 </ul>
             </div>
-            <div class="px-4 py-3">
-                <h5 class="mb-0">Karmas</h5>
-                <div class="p-4 rounded shadow-sm bg-light">
-                    <p class="font-italic mb-0">Porteur : {{utilisateur.karma_porteur}}</p>
-                    <p class="font-italic mb-0">Evaluateur : {{utilisateur.karma_evaluateur}}</p>
-                    <p class="font-italic mb-0">Financeur : {{utilisateur.karma_financeur}}</p>
-                </div>
-            </div>
             <div class="py-4 px-4">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="mb-0">Dernier projets crées</h5><a href="/utilisateur/profilprojets" class="btn btn-link text-muted">Montrer tous</a>
+                    <h5 class="mb-0">Dernier projets crées</h5><a href="#" class="btn btn-link text-muted">Montrer tous</a>
                 </div>
                 <div class="row">
                     {% for projet in listProjet %}
-                        {% if forloop.counter0 < 7 %}
                         <div class="card rounded shadow-sm border-0">
                             <div class="card-body p-4"><img src="/media/{{projet.photo}}" alt="" width="200" height="200" class="img-fluid d-block mx-auto mb-3">
                                 <h5> <a href="#" class="text-dark">{{projet.titre}}</a></h5>
@@ -89,7 +79,6 @@ body {
                                 <p class="text-muted font-italic">{{projet.cout_estime}}</p>
                             </div>
                         </div>
-                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

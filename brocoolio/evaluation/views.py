@@ -58,3 +58,15 @@ def listeEvaluationProjet(request,id_projet):
 
     response['listeEvaluationProjet']=listeEvaluationProjet
     return render(request,'listeEvaluationProjet.html',response)
+
+
+def listeProjetAEvaluer(request):
+    response = {}
+    if request.session is not None:
+        id = request.user.id
+        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        
+        response['listProjet']=listProjet
+    else:
+        print('plus de session')
+    return render(request, 'listeProjetAEvaluer.html', response)

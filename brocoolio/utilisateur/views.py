@@ -26,7 +26,7 @@ def connexion(request):
                 print('connexion réussi !')
 
 
-                return redirect(profil)
+                return redirect("/projet/accueil")
             else:
                 print('connexion pas réussi !')
         else:
@@ -42,7 +42,7 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
-    return redirect(connexion)
+    return HttpResponseRedirect("/projet/accueil")
 
 def suppression(request):
     id = request.user.id
@@ -84,8 +84,10 @@ def profil(request):
         if request.session is not None:
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
-            listProjet = Projet.objects.all().filter(utilisateur_id=id)
+            listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
             listProjetCount = listProjet.count()
+            
+            
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur
@@ -122,5 +124,26 @@ def editionprofil(request):
             'modificationform':modificationform,
         }
         return render(request, 'editionprofil.html', reponse)
+    else:
+        return redirect(connexion)
+
+
+
+def profilprojets(request):
+    response = {}
+    if request.user.is_authenticated:
+        if request.session is not None:
+            id = request.user.id
+            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
+            listProjetCount = listProjet.count()
+            
+            
+            response['listProjet']=listProjet
+            response['listProjetCount']=listProjetCount
+            response['utilisateur']=utilisateur
+        else:
+            print('plus de session')
+        return render(request, 'profilprojets.html', response)
     else:
         return redirect(connexion)

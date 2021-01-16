@@ -2,8 +2,8 @@ from django.shortcuts import render
 from .models import Projet,Commentaire
 from utilisateur.models import Utilisateur
 from .forms import CreationProjetForm,CommentaireForm
+from datetime import date
 # Create your views here.
-
 
 def index(request):
     reponse = {
@@ -27,9 +27,13 @@ def creation(request):
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
 
-            photo.name = utilisateur.idUser.username
-            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation='1998-12-30',date_validation='2001-06-18')
+            todayDate = date.today().strftime("%Y-%m-%d")
+            if(photo is not None):
+                photo.name = utilisateur.idUser.username
+            
+            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo="images/projet/test.png",description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
 
+            
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
@@ -69,3 +73,43 @@ def affichage(request,id_projet):
         "commentaires":commentaires,
     }
     return render(request, 'affichage.html', response)
+
+
+def accueil(request):
+    response = {}
+    if request.session is not None:
+        id = request.user.id
+        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        listProjetCount = listProjet.count()
+        
+        response['listProjet']=listProjet
+        response['listProjetCount']=listProjetCount
+    else:
+        print('plus de session')
+    return render(request, 'accueil.html', response)
+
+def dernierprojets(request):
+    response = {}
+    if request.session is not None:
+        id = request.user.id
+        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        listProjetCount = listProjet.count()
+        
+        response['listProjet']=listProjet
+        response['listProjetCount']=listProjetCount
+    else:
+        print('plus de session')
+    return render(request, 'dernierprojets.html', response)
+
+def mieuxevalues(request):
+    response = {}
+    if request.session is not None:
+        id = request.user.id
+        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        listProjetCount = listProjet.count()
+        
+        response['listProjet']=listProjet
+        response['listProjetCount']=listProjetCount
+    else:
+        print('plus de session')
+    return render(request, 'mieuxevalues.html', response)
