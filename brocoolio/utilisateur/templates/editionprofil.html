@@ -1,0 +1,62 @@
+{% extends "navbar.html" %}
+{% block content %}
+{%load static %}
+
+<style>
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+
+</style>
+
+
+
+
+<main class = "form-signin">
+  <div class="d-flex justify-content-center">
+    <form action="" enctype="multipart/form-data" method="post">
+      <h1>Edition du profil</h1>
+      {% csrf_token %}
+      <div class="form-group">
+          <label>Pseudo</label>
+          <div>
+            {{ modifform.pseudo }}
+          </div>
+          
+      </div>
+      <div class="form-group">
+        <label>Adresse Mail</label>
+        <div>
+          {{ modifform.mail }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div>
+          {{ modifform.mdp }}
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success" style="background-color:forestgreen">Submit</button>
+      </div>
+      </form>
+  </div>
+
+  {% if inscriptionform.is_valid %}
+
+  <h4>Le compte a été crée avec succès !</h4>
+
+  {% endif %}
+
+</main>
+
+
+
+
+
+
+
+{% endblock %}

@@ -8,4 +8,5 @@ urlpatterns = [
     path('profil',views.profil, name='profil'),
     path('deconnexion',views.deconnexion,name='deconnexion'),
     path('suppression',views.suppression,name='suppression'),
+    path('editionprofil',views.editionprofil,name='editionprofil'),
 ]
