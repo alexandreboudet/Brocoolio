@@ -1,0 +1,14 @@
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{evaluationprojetform.media}}
+    {{ evaluationprojetform.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% if success == 'oui' %}
+Félicitation, votre avis a été enregistré apparement :=)
+{% elif success == 'non' %}
+Ça a pas marché fils de pute :==)
+{% endif %}

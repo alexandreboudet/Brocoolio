@@ -24,7 +24,7 @@ def creation(request):
             description = request.POST.get('description')
             cout_estime = request.POST.get('cout_estime')
 
-            id = request.session.get('_auth_user_id')
+            id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
 
             photo.name = utilisateur.idUser.username
@@ -50,7 +50,7 @@ def affichage(request,id_projet):
         if commentaireform.is_valid():
 
             commentaire = request.POST.get('commentaire')
-            id = request.session.get('_auth_user_id')
+            id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
 
             Commentaire.objects.create(utilisateur=utilisateur,projet=projet,commentaire=commentaire)
