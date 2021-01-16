@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Projet,Commentaire
 from utilisateur.models import Utilisateur
+from evaluation.models import EvaluationProjet
 from .forms import CreationProjetForm,CommentaireForm
 from datetime import date
 # Create your views here.

@@ -56,7 +56,7 @@ body {
                         <h5 class="font-weight-bold mb-0 d-block">15</h5><small class="text-muted"> <i class=" mr-1"></i>Projet financés</small>
                     </li>
                     <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">48</h5><small class="text-muted"> <i class="mr-1"></i>Evaluation effectués</small>
+                        <h5 class="font-weight-bold mb-0 d-block">{{EvaluationCount}}</h5><small class="text-muted"> <i class="mr-1"></i>Evaluation effectués</small>
                     </li>
                 </ul>
             </div>
@@ -86,7 +86,7 @@ body {
                                     <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
                                     <li class="list-inline-item m-0"><i class="fa fa-star-o text-success"></i></li>
                                 </ul>
-                                <p class="text-muted font-italic">{{projet.cout_estime}}</p>
+                                <p class="text-muted font-italic">Montant estimé : {{projet.cout_estime}}€</p>
                             </div>
                         </div>
                         {% endif %}

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .forms import InscriptionForm,ConnexionForm, ModificationForm
 from .models import Utilisateur
 from projet.models import Projet
+from evaluation.models import EvaluationProjet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 import hashlib
@@ -85,9 +86,10 @@ def profil(request):
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
             listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
+            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
             listProjetCount = listProjet.count()
             
-            
+            response['EvaluationCount']=EvaluationCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur
@@ -101,17 +103,29 @@ def editionprofil(request):
     if request.user.is_authenticated :
         if request.method == 'POST':
             # create a form instance and populate it with data from the request:
+            id = request.user.id
+            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
             modificationform = ModificationForm(request.POST)
             # check whether it's valid:
             if modificationform.is_valid():
                 pseudo = request.POST.get('pseudo')
                 mail = request.POST.get('mail')
                 mdp = request.POST.get('mdp')
+                karma_porteur = request.POST.get('karma_porteur')
+                karma_financeur = request.POST.get('karma_financeur')
+                karma_evaluateur = request.POST.get('karma_evaluateur')
+                if(karma_porteur and utilisateur.karma_porteur == 0):
+                    utilisateur.karma_porteur = 7
+                if(karma_financeur and utilisateur.karma_financeur == 0):
+                    utilisateur.karma_financeur = 5
+                if(karma_evaluateur and utilisateur.karma_evaluateur == 0):
+                    utilisateur.karma_evaluateur = 5
                 user = request.user
                 user.username = pseudo
                 user.email = mail
                 user.set_password(mdp)
                 user.save()
+                utilisateur.save()
 
             else:
                 print('formulaire pas valide')
@@ -136,9 +150,10 @@ def profilprojets(request):
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
             listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
+            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
             listProjetCount = listProjet.count()
             
-            
+            response['EvaluationCount']=EvaluationCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur

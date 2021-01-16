@@ -26,9 +26,11 @@
                 <li class="nav-item">
                     <a class="nav-link" onmouseover="this.style.color='black'" onmouseout="this.style.color='white'" style="color:white" href="/projet/accueil">Projets</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" onmouseover="this.style.color='black'" onmouseout="this.style.color='white'" style="color:white" href="/evaluation/listeProjetAEvaluer">Evaluations</a>
                 </li>
+                {% endif %}
             </ul>
         </div>
 
