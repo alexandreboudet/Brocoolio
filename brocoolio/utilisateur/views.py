@@ -80,40 +80,47 @@ def inscription(request):
 
 def profil(request):
     response = {}
-    if request.session is not None:
-        id = request.session.get('_auth_user_id')
-        utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
-        listProjet = Projet.objects.all().filter(utilisateur_id=id)
-        listProjetCount = listProjet.count()
-        response['listProjet']=listProjet
-        response['listProjetCount']=listProjetCount
-        response['utilisateur']=utilisateur
+    if request.user.is_authenticated:
+        if request.session is not None:
+            id = request.user.id
+            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            listProjet = Projet.objects.all().filter(utilisateur_id=id)
+            listProjetCount = listProjet.count()
+            response['listProjet']=listProjet
+            response['listProjetCount']=listProjetCount
+            response['utilisateur']=utilisateur
+        else:
+            print('plus de session')
+        return render(request, 'profil.html', response)
     else:
-        print('plus de session')
-    return render(request, 'profil.html', response)
+        return redirect(connexion)
 
 def editionprofil(request):
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        inscriptionform = InscriptionForm(request.POST)
-        # check whether it's valid:
-        if inscriptionform.is_valid():
-            pseudo = request.POST.get('pseudo')
-            mail = request.POST.get('mail')
-            mdp = request.POST.get('mdp')
-            img_profil = 'brocolie.png'
-            user = User.objects.create_user(username=pseudo,email=mail,password=mdp)
-            user.save()
-            Utilisateur.objects.create(idUser=user,estValide=False,img_profil=img_profil
-                                       ,date_creation='1805-02-12',karma_porteur=0,karma_evaluateur=0,karma_financeur=0)
+    if request.user.is_authenticated : 
+        if request.method == 'POST':
+            # create a form instance and populate it with data from the request:
+            modificationform = ModificationForm(request.POST)
+            # check whether it's valid:
+            if modificationform.is_valid():
+                pseudo = request.POST.get('pseudo')
+                mail = request.POST.get('mail')
+                mdp = request.POST.get('mdp')
+                user = request.user
+                user.username = pseudo
+                user.email = mail
+                user.password = mdp
+                user.save()
+                
+            else:
+                print('formulaire pas valide')
+        # if a GET (or any other method) we'll create a blank form
         else:
-            print('formulaire pas valide')
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        inscriptionform = InscriptionForm ()
+            modificationform = ModificationForm ()
 
-    inscriptionform = InscriptionForm(request.POST)
-    reponse = {
-        'inscriptionform':inscriptionform,
-    }
-    return render(request, 'inscription.html', reponse)
+        modificationform = ModificationForm(request.POST)
+        reponse = {
+            'modificationform':modificationform,
+        }
+        return render(request, 'editionprofil.html', reponse)
+    else:
+        return redirect(connexion)
