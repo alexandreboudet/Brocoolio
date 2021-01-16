@@ -42,7 +42,11 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
+<<<<<<< HEAD
     return HttpResponseRedirect("/projet/accueil")
+=======
+    return redirect(connexion)
+>>>>>>> back-younes
 
 def suppression(request):
     id = request.user.id
@@ -98,7 +102,7 @@ def profil(request):
         return redirect(connexion)
 
 def editionprofil(request):
-    if request.user.is_authenticated : 
+    if request.user.is_authenticated :
         if request.method == 'POST':
             # create a form instance and populate it with data from the request:
             modificationform = ModificationForm(request.POST)
@@ -110,9 +114,9 @@ def editionprofil(request):
                 user = request.user
                 user.username = pseudo
                 user.email = mail
-                user.password = mdp
+                user.set_password(mdp)
                 user.save()
-                
+
             else:
                 print('formulaire pas valide')
         # if a GET (or any other method) we'll create a blank form
@@ -126,6 +130,7 @@ def editionprofil(request):
         return render(request, 'editionprofil.html', reponse)
     else:
         return redirect(connexion)
+<<<<<<< HEAD
 
 
 
@@ -147,3 +152,5 @@ def profilprojets(request):
         return render(request, 'profilprojets.html', response)
     else:
         return redirect(connexion)
+=======
+>>>>>>> back-younes
