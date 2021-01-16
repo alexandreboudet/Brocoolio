@@ -18,25 +18,25 @@
 <main class = "form-signin">
   <div class="d-flex justify-content-center">
     <form action="" enctype="multipart/form-data" method="post">
-      <h1>Inscription</h1>
+      <h1>Edition du profil</h1>
       {% csrf_token %}
       <div class="form-group">
           <label>Pseudo</label>
           <div>
-            {{ inscriptionform.pseudo }}
+            {{ modificationform.pseudo }}
           </div>
           
       </div>
       <div class="form-group">
         <label>Adresse Mail</label>
         <div>
-          {{ inscriptionform.mail }}
+          {{ modificationform.mail }}
         </div>
       </div>
       <div class="form-group">
         <label>Mot de passe</label>
         <div>
-          {{ inscriptionform.mdp }}
+          {{ modificationform.mdp }}
         </div>
       </div>
       <div class="d-flex justify-content-center">
@@ -45,9 +45,9 @@
       </form>
   </div>
 
-  {% if inscriptionform.is_valid %}
+  {% if modificationform.is_valid %}
 
-  <h4>Le compte a été crée avec succès !</h4>
+  <h4>Le compte a été modifié avec succès !</h4>
 
   {% endif %}
 
