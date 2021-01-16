@@ -29,17 +29,30 @@
           <div class="media-body mb-5">
             <h3 class="mt-0 mb-0">{{projet.titre}}</h3>
           </div>
+          <div style="float:right;" class="mb-3">
+          {% if user.is_authenticated %}
+            {% if projet.id_porteur == user.id %}
+              <button class="btn btn-sm btn-warning">Modifier</button>
+            {% endif %}
+              <button class="btn btn-sm btn-success">Évaluer</button>
+            {% if creationprojetform.is_valid %}
+              <button class="btn btn-sm btn-success">Financer</button>
+            {% endif %}
+          {% endif %}
+          </div>
         </div>
       </div>
-
       <div class="bg-light p-4 d-flex justify-content-end text-center">
         <ul class="list-inline mb-0">
           <li class="list-inline-item">
             <h5 class="font-weight-bold mb-0 d-block">{{projet.date_creation}}</h5><small class="text-muted"> <i
                 class="mr-1"></i>Date de création</small>
-          </li>
-          <li class="list-inline-item" style="margin-left:25px !important;">
-            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime}}</h5><small class="text-muted"> <i class=" mr-1"></i>Coût estimé</small>
+          </li><li class="list-inline-item" style="margin-left:25px !important;">
+            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime}}€</h5><small class="text-muted"> <i
+                class=" mr-1"></i>Coût estimé</small>
+          </li><li class="list-inline-item" style="margin-left:25px !important;">
+            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime}}€</h5><small class="text-muted"> <i
+                class=" mr-1"></i>Fonds récoltés</small>
           </li>
         </ul>
       </div>
