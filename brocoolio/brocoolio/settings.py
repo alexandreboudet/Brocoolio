@@ -40,6 +40,7 @@ STATICFILES_DIRS = (
 INSTALLED_APPS = [
     'projet.apps.ProjetConfig',
     'utilisateur.apps.UtilisateurConfig',
+    'evaluation.apps.EvaluationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

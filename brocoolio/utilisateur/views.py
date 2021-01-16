@@ -41,10 +41,10 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
-    return redirect(connexion)
+    return HttpResponseRedirect("")
 
 def suppression(request):
-    id = request.session.get('_auth_user_id')
+    id = request.user.id
     u = User.objects.get(id=id)
     testUser = u.delete()
     logout(request)
