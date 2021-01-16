@@ -1,3 +1,9 @@
+<style>
+  body {
+    background: #EEEEEE !important;
+  }
+</style>
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -7,20 +13,25 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
   integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-
-<form action="" enctype="multipart/form-data" method="POST">
-    {% csrf_token %}
-
-<div class="jumbotron">
-  <div class="form-group">
-    {{creationprojetform.media}}
-    {{ creationprojetform.as_p }}
+<div class="row py-5 px-4">
+  <div class="mx-auto">
+    <!-- Profile widget -->
+    <div class="bg-white shadow rounded overflow-hidden">
+      <div class="p-4 d-flex justify-content-end text-center">
+        <form action="" enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            {{creationprojetform.media}}
+            {{ creationprojetform.as_p }}
+          </div>
+          {% if creationprojetform.is_valid %}
+          <input class="btn btn-md btn-success" type="submit" value="Valider">
+          {% else %}
+          <input class="btn btn-md btn-success" type="submit" value="Valider" disabled>
+          {% endif %}
+        </form>
+      </div>
+    </div>
   </div>
-  {% if creationprojetform.is_valid %}
-  <input class="btn btn-md btn-success" type="submit" value="Valider">
-  {% else %}
-  <input class="btn btn-md btn-success" type="submit" value="Valider" disabled>
-  {% endif %}
-</form>
 </div>
 
