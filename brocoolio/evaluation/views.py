@@ -16,6 +16,10 @@ def projet(request,id_projet):
     projet = Projet.objects.all().filter(id=id_projet)
     if not projet:
         raise Http404("Le projet n'existe pas "+str(id_projet))
+
+    if(projet[0].utilisateur_id == id_projet):
+        raise Http404("Vous ne pouvez pas évaluer votre propre projet ")
+
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
 
