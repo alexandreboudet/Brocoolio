@@ -7,4 +7,4 @@ class CreationProjetForm(forms.Form):
     cout_estime = forms.FloatField(label='Coût estimé',widget=forms.NumberInput(attrs={'class': 'form-control'}),required=False)
 
 class CommentaireForm(forms.Form):
-    commentaire = forms.CharField(label='Commentaire',widget=forms.Textarea(attrs={'class': 'form-control'}),required=False)
+    commentaire = forms.CharField(label='Ajout d\'un commentaire ',widget=forms.Textarea(attrs={'class': 'form-control'}),required=False)
