@@ -4,6 +4,7 @@ from .forms import EvaluationProjetForm
 from projet.models import Projet
 from utilisateur.models import Utilisateur
 from utilisateur.views import connexion
+from django.http import Http404
 import datetime
 
 import time
@@ -12,11 +13,13 @@ import time
 def projet(request,id_projet):
     response = {}
     todaysDate = datetime.date.today()
-    projet = Projet.objects.all().filter(id=id_projet)[0]
-    print(request.user)
-
+    projet = Projet.objects.all().filter(id=id_projet)
+    if not projet:
+        raise Http404("Le projet n'existe pas "+str(id_projet))
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
+
+
         evaluationprojetform = EvaluationProjetForm(request.POST)
         # check whether it's valid:
         if evaluationprojetform.is_valid():
@@ -44,3 +47,10 @@ def projet(request,id_projet):
     response['evaluationprojetform']=evaluationprojetform
 
     return render(request, 'evaluation.html', response)
+
+def listeEvaluationProjet(request,id_projet):
+    response = {}
+    listeEvaluationProjet=EvaluationProjet.objects.all().filter(projet_id=id_projet)
+
+    response['listeEvaluationProjet']=listeEvaluationProjet
+    return render(request,'listeEvaluationProjet.html',response)

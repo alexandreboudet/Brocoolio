@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 
 
 {{user.is_authenticated}}
-
+<a href="/evaluation/projet/{{projet.id}}" > Evaluez ce projet</a>
+<a href="/evaluation/listeEvaluationProjet/{{projet.id}}" > Voir les évaluations</a>
 {{projet.titre}}<br>
 <img src="/media/{{projet.photo}}" alt="">
 {{projet.description}}<br>
@@ -12,7 +12,7 @@
 
 {% for commentaire in commentaires %}
 _____________________________________<br>
-  Auteur :{{commentaire.utilisateur.idUser.username}}<br>
+  Auteur :{{commentaire.auteur.idUser.username}}<br>
   Commentaire :{{commentaire.commentaire}}<br>
 {% endfor %}
 
@@ -23,11 +23,3 @@ _____________________________________<br>
     {{ commentaireform.as_p }}
     <input type="submit" value="Submit">
 </form>
-=======
-{{projet.0.titre}}<br>
-<img src="/media/{{projet.0.photo}}" alt="">
-{{projet.0.description}}<br>
-{{projet.0.date_creation}}<br>
-{{projet.0.cout_estime}}<br>
-
->>>>>>> front-Thomas

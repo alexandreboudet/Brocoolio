@@ -42,7 +42,7 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
-    return HttpResponseRedirect("")
+    return redirect(connexion)
 
 def suppression(request):
     id = request.user.id
@@ -96,7 +96,7 @@ def profil(request):
         return redirect(connexion)
 
 def editionprofil(request):
-    if request.user.is_authenticated : 
+    if request.user.is_authenticated :
         if request.method == 'POST':
             # create a form instance and populate it with data from the request:
             modificationform = ModificationForm(request.POST)
@@ -108,9 +108,9 @@ def editionprofil(request):
                 user = request.user
                 user.username = pseudo
                 user.email = mail
-                user.password = mdp
+                user.set_password(mdp)
                 user.save()
-                
+
             else:
                 print('formulaire pas valide')
         # if a GET (or any other method) we'll create a blank form
