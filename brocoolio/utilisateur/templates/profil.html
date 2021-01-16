@@ -76,7 +76,7 @@ body {
                     {% for projet in listProjet %}
                         {% if forloop.counter0 < 7 %}
                         <div class="card rounded shadow-sm border-0">
-                            <div class="card-body p-4"><img src="/media/{{projet.photo}}" alt="" width="200" height="200" class="img-fluid d-block mx-auto mb-3">
+                            <div class="card-body p-4"><img src="/media/{{projet.photo}}" alt="" width="200" height="200" style="min-width:200;min-height:200;" class="img-fluid d-block mx-auto mb-3">
                                 <h5> <a href="#" class="text-dark">{{projet.titre}}</a></h5>
                                 <p class="small text-muted font-italic">{{projet.date_creation}}</p>
                                 <ul class="list-inline small">
