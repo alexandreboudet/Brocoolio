@@ -9,7 +9,7 @@
   }
 
   .onhoversurbrillance:hover {
-    background:#EEEEEE;  
+    background:#EEEEEE;
   }
 </style>
 
@@ -39,7 +39,9 @@
             {% if projet.id_porteur == user.id %}
               <button class="btn btn-sm btn-warning">Modifier</button>
             {% endif %}
-              <button class="btn btn-sm btn-success">Évaluer</button>
+            {% if bool_evalprojet %}
+              <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
+            {% endif %}
             {% if creationprojetform.is_valid %}
               <button class="btn btn-sm btn-success">Financer</button>
             {% endif %}
@@ -67,8 +69,8 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Description</h5>
         </div>
-      
-      
+
+
         <div class="row" style="margin:20 5 20 5;">
           <div class="card rounded shadow-md border-0">
             <div class="card-body p-6">
@@ -83,7 +85,7 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Commentaires</h5>
         </div>
-        
+
 
           {% for commentaire in commentaires %}
             <div class="row" style="margin:5 5 5 5;">
