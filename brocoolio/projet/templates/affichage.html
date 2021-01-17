@@ -4,27 +4,10 @@
   }
 
   .onhoversurbrillance:hover {
-    background:#EEEEEE;  
+    background:#EEEEEE;
   }
 </style>
 
-<<<<<<< HEAD
-{{user.is_authenticated}}
-<a href="/evaluation/projet/{{projet.id}}" > Evaluez ce projet</a>
-<a href="/evaluation/listeEvaluationProjet/{{projet.id}}" > Voir les évaluations</a>
-{{projet.titre}}<br>
-<img src="/media/{{projet.photo}}" alt="">
-{{projet.description}}<br>
-{{projet.date_creation}}<br>
-{{projet.cout_estime}}<br>
-
-
-{% for commentaire in commentaires %}
-_____________________________________<br>
-  Auteur :{{commentaire.auteur.idUser.username}}<br>
-  Commentaire :{{commentaire.commentaire}}<br>
-{% endfor %}
-=======
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -51,7 +34,9 @@ _____________________________________<br>
             {% if projet.id_porteur == user.id %}
               <button class="btn btn-sm btn-warning">Modifier</button>
             {% endif %}
-              <button class="btn btn-sm btn-success">Évaluer</button>
+            {% if bool_evalprojet %}
+              <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
+            {% endif %}
             {% if creationprojetform.is_valid %}
               <button class="btn btn-sm btn-success">Financer</button>
             {% endif %}
@@ -79,8 +64,8 @@ _____________________________________<br>
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Description</h5>
         </div>
-      
-      
+
+
         <div class="row" style="margin:20 5 20 5;">
           <div class="card rounded shadow-md border-0">
             <div class="card-body p-6">
@@ -89,14 +74,13 @@ _____________________________________<br>
           </div>
         </div>
       </div>
->>>>>>> front/julien
 
 
       <div class="py-4 px-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Commentaires</h5>
         </div>
-        
+
 
           {% for commentaire in commentaires %}
             <div class="row" style="margin:5 5 5 5;">

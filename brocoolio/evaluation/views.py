@@ -13,12 +13,16 @@ import time
 def projet(request,id_projet):
     response = {}
     todaysDate = datetime.date.today()
-    projet = Projet.objects.all().filter(id=id_projet)
+    projet = Projet.objects.all().filter(id=id_projet)[0]
     if not projet:
         raise Http404("Le projet n'existe pas "+str(id_projet))
 
-    if(projet[0].utilisateur_id == id_projet):
+    if(projet.utilisateur_id == request.user.id):
         raise Http404("Vous ne pouvez pas évaluer votre propre projet "+str(id_projet))
+
+    dejaeval = EvaluationProjet.objects.all().filter(evaluateur_id=request.user.id)
+    if dejaeval is None:
+        raise Http404("Vous avez déja évaluer ce projet")
 
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
@@ -36,10 +40,10 @@ def projet(request,id_projet):
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
             EvaluationProjet.objects.create(projet=projet,evaluateur=utilisateur,date_evaluation=todaysDate,eval_idee=idee,eval_impact_social=impact_social,eval_calendrier=calendrier,eval_budget=budget,commentaire=commentaire)
-
-            response['succes']='oui'
+            projet.moyenne_evaluation=(projet.moyenne_evaluation*projet.nbr_evaluation+(float(idee)+float(impact_social)+float(budget)+float(calendrier)))/(projet.nbr_evaluation+1)
+            projet.nbr_evaluation = projet.nbr_evaluation + 1
+            projet.save()
         else:
-            response['succes']='non'
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
     elif not request.user.is_authenticated:
