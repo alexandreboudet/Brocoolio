@@ -9,7 +9,7 @@
   }
 
   .onhoversurbrillance:hover {
-    background:#EEEEEE;  
+    background:#EEEEEE;
   }
 </style>
 
@@ -39,9 +39,17 @@
             {% if projet.id_porteur == user.id %}
               <button class="btn btn-sm btn-warning">Modifier</button>
             {% endif %}
-              <button class="btn btn-sm btn-success">Évaluer</button>
+            {% if bool_evalprojet %}
+              <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
+            {% endif %}
             {% if creationprojetform.is_valid %}
               <button class="btn btn-sm btn-success">Financer</button>
+            {% endif %}
+            {% if bool_displayShowEvalsButton and not bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-success">Afficher les évaluations</button>
+            {% endif %}
+            {% if bool_displayShowEvalsButton and bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-warning">Masquer les évaluations</button>
             {% endif %}
           {% endif %}
           </div>
@@ -67,8 +75,8 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Description</h5>
         </div>
-      
-      
+
+
         <div class="row" style="margin:20 5 20 5;">
           <div class="card rounded shadow-md border-0">
             <div class="card-body p-6">
@@ -83,11 +91,11 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Commentaires</h5>
         </div>
-        
+
 
           {% for commentaire in commentaires %}
-            <div class="row" style="margin:5 5 5 5;">
-              <div class="onhoversurbrillance card rounded shadow-sm border-0">
+            <div class="row" style="margin:20 5 20 5;">
+              <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
                 <div class="card-body p-6">
                   <h5 class="text-dark">{{commentaire.utilisateur.idUser.username}}</h5>
                   <p class="text-muted font-italic">{{commentaire.commentaire}}</p>

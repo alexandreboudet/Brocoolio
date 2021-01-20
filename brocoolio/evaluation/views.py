@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import EvaluationProjet
 from .forms import EvaluationProjetForm
 from projet.models import Projet
@@ -13,9 +13,17 @@ import time
 def projet(request,id_projet):
     response = {}
     todaysDate = datetime.date.today()
-    projet = Projet.objects.all().filter(id=id_projet)
+    projet = Projet.objects.all().filter(id=id_projet)[0]
     if not projet:
         raise Http404("Le projet n'existe pas "+str(id_projet))
+
+    if(projet.utilisateur_id == request.session['utilisateur_session']):
+        raise Http404("Vous ne pouvez pas évaluer votre propre projet "+str(id_projet))
+
+    dejaeval = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
+    if dejaeval is None:
+        raise Http404("Vous avez déja évaluer ce projet")
+
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
 
@@ -29,13 +37,21 @@ def projet(request,id_projet):
             budget = request.POST.get('budget')
             calendrier = request.POST.get('calendrier')
 
-            id = request.user.id
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
-            EvaluationProjet.objects.create(projet=projet[0],evaluateur=utilisateur,date_evaluation=todaysDate,eval_idee=idee,eval_impact_social=impact_social,eval_calendrier=calendrier,eval_budget=budget,commentaire=commentaire)
+            id = request.session['utilisateur_session']
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+            EvaluationProjet.objects.create(projet=projet,evaluateur=utilisateur,date_evaluation=todaysDate,eval_idee=idee,eval_impact_social=impact_social,eval_calendrier=calendrier,eval_budget=budget,commentaire=commentaire)
+            projet.moyenne_evaluation=(projet.moyenne_evaluation*projet.nbr_evaluation+(float(idee)+float(impact_social)+float(budget)+float(calendrier)))/(projet.nbr_evaluation+1)
+            projet.nbr_evaluation = projet.nbr_evaluation + 1
 
-            response['succes']='oui'
+            projet.save()
+            if((projet.nbr_evaluation>=2) & (projet.moyenne_evaluation>=10)):
+                projet.estValide = True
+                projet.save()
+
+            return redirect('/projet/affichage/'+ str(id_projet))
+
+
         else:
-            response['succes']='non'
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
     elif not request.user.is_authenticated:
@@ -55,13 +71,12 @@ def listeEvaluationProjet(request,id_projet):
     response['listeEvaluationProjet']=listeEvaluationProjet
     return render(request,'listeEvaluationProjet.html',response)
 
-
 def listeProjetAEvaluer(request):
     response = {}
     if request.session is not None:
-        id = request.user.id
+        id = request.session['utilisateur_session']
         listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
-        
+
         response['listProjet']=listProjet
     else:
         print('plus de session')

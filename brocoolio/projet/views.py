@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Projet,Commentaire
 from utilisateur.models import Utilisateur
 from evaluation.models import EvaluationProjet
 from .forms import CreationProjetForm,CommentaireForm
+from evaluation.models import EvaluationProjet
 from datetime import date
 # Create your views here.
 
@@ -25,16 +26,21 @@ def creation(request):
             description = request.POST.get('description')
             cout_estime = request.POST.get('cout_estime')
 
-            id = request.user.id
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            id = request.session['utilisateur_session']
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
 
             todayDate = date.today().strftime("%Y-%m-%d")
             if(photo is not None):
                 photo.name = utilisateur.idUser.username
+<<<<<<< HEAD
             
             Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
+=======
+>>>>>>> front-Thomas
 
-            
+            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
+            return redirect('/projet/accueil')
+
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
@@ -48,15 +54,31 @@ def creation(request):
     return render(request, 'creation.html', reponse)
 
 def affichage(request,id_projet):
+    
     projet = Projet.objects.all().filter(id=id_projet)[0]
     commentaires = Commentaire.objects.all().filter(projet_id=id_projet)
+    evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
+    id = request.session['utilisateur_session']
+    utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+    # si evalprojet is not none, alors c'est que l'utilisateur a déja évaluer le projet
+
+    if (projet.utilisateur.idUser_id == request.session['utilisateur_session']) | (evalprojet.exists() | utilisateur.karma_evaluateur == 0):
+        bool_evalprojet = False
+    else:
+        bool_evalprojet = True
+
+    if (evalprojet.exists()):
+        bool_displayShowEvalsButton = True
+    else:
+        bool_displayShowEvalsButton = False
+
     if request.method == 'POST':
         commentaireform = CommentaireForm(request.POST)
         if commentaireform.is_valid():
 
             commentaire = request.POST.get('commentaire')
-            id = request.user.id
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            
+            
 
             Commentaire.objects.create(utilisateur=utilisateur,projet=projet,commentaire=commentaire)
 
@@ -72,30 +94,61 @@ def affichage(request,id_projet):
         "projet":projet,
         "commentaireform":commentaireform,
         "commentaires":commentaires,
+        "bool_evalprojet":bool_evalprojet,
+        "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
+        "bool_isEvalDisplayed":False,
     }
     return render(request, 'affichage.html', response)
 
 
 def accueil(request):
     response = {}
-    if request.session is not None:
-        id = request.user.id
-        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
-        listProjetCount = listProjet.count()
-        
-        response['listProjet']=listProjet
-        response['listProjetCount']=listProjetCount
-    else:
-        print('plus de session')
+
+    
+    
+    listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
+    listProjetEval = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
+    listProjetCount = listProjet.count()
+    bool_porteur = False
+    utilisateur = 0
+
+    if request.user.is_authenticated:
+        id = request.session['utilisateur_session']
+        if(len(Utilisateur.objects.all().filter(id=id)) > 0):
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+            if(utilisateur.karma_porteur > 0):
+                bool_porteur = True
+            
+            
+    
+    response['bool_porteur']=bool_porteur
+    response['listProjet']=listProjet
+    response['listProjetEval']=listProjetEval
+    response['listProjetCount']=listProjetCount
+    response['utilisateur']=utilisateur
+    if request.method == 'POST':
+        value = request.POST.get("search")
+        if(value != ""):
+            return redirect('/projet/recherche/'+value)
     return render(request, 'accueil.html', response)
 
 def dernierprojets(request):
     response = {}
     if request.session is not None:
-        id = request.user.id
-        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        id = request.session['utilisateur_session']
+        listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
         listProjetCount = listProjet.count()
+        bool_porteur = False
+
+
+        if(len(Utilisateur.objects.all().filter(id=id)) > 0):
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+            if(utilisateur.karma_porteur > 0):
+                bool_porteur = True
+                
+                
         
+        response['bool_porteur']=bool_porteur
         response['listProjet']=listProjet
         response['listProjetCount']=listProjetCount
     else:
@@ -105,13 +158,31 @@ def dernierprojets(request):
 def mieuxevalues(request):
     response = {}
     if request.session is not None:
-        id = request.user.id
-        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        id = request.session['utilisateur_session']
+        listProjet = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
         listProjetCount = listProjet.count()
-        
+        bool_porteur = False
+
+        if(len(Utilisateur.objects.all().filter(id=id)) > 0):
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+            if(utilisateur.karma_porteur > 0):
+                bool_porteur = True
+                
+                
+        response['bool_porteur']=bool_porteur
         response['listProjet']=listProjet
         response['listProjetCount']=listProjetCount
     else:
         print('plus de session')
     return render(request, 'mieuxevalues.html', response)
 
+def recherche(request,search):
+    response = {}
+    if request.session is not None:
+        id = request.session['utilisateur_session']
+        listProjet = Projet.objects.all().filter(estValide=0,titre__contains=search).order_by('-moyenne_evaluation','-date_creation','titre')
+
+        response['listProjet']=listProjet
+    else:
+        print('plus de session')
+    return render(request, 'recherche.html', response)
