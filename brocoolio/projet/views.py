@@ -101,8 +101,8 @@ def accueil(request):
 
     
     
-    listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
-    listProjetEval = Projet.objects.all().filter(estValide=0).order_by('-moyenne_evaluation','-date_creation','titre')
+    listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
+    listProjetEval = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
     listProjetCount = listProjet.count()
     bool_porteur = False
     utilisateur = 0
@@ -131,7 +131,7 @@ def dernierprojets(request):
     response = {}
     if request.session is not None:
         id = request.session['utilisateur_session']
-        listProjet = Projet.objects.all().filter(estValide=0).order_by('-date_creation','titre')
+        listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
         listProjetCount = listProjet.count()
         bool_porteur = False
 
@@ -154,7 +154,7 @@ def mieuxevalues(request):
     response = {}
     if request.session is not None:
         id = request.session['utilisateur_session']
-        listProjet = Projet.objects.all().filter(estValide=0).order_by('-moyenne_evaluation','-date_creation','titre')
+        listProjet = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
         listProjetCount = listProjet.count()
         bool_porteur = False
 

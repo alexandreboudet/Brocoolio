@@ -38,12 +38,19 @@ def projet(request,id_projet):
             calendrier = request.POST.get('calendrier')
 
             id = request.session['utilisateur_session']
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             EvaluationProjet.objects.create(projet=projet,evaluateur=utilisateur,date_evaluation=todaysDate,eval_idee=idee,eval_impact_social=impact_social,eval_calendrier=calendrier,eval_budget=budget,commentaire=commentaire)
             projet.moyenne_evaluation=(projet.moyenne_evaluation*projet.nbr_evaluation+(float(idee)+float(impact_social)+float(budget)+float(calendrier)))/(projet.nbr_evaluation+1)
             projet.nbr_evaluation = projet.nbr_evaluation + 1
+
             projet.save()
+            if((projet.nbr_evaluation>=2) & (projet.moyenne_evaluation>=10)):
+                projet.estValide = True
+                projet.save()
+
             return redirect('/projet/affichage/'+ str(id_projet))
+
+
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form

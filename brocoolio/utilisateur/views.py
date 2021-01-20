@@ -116,7 +116,7 @@ def editionprofil(request):
         if request.method == 'POST':
             # create a form instance and populate it with data from the request:
             id = request.session['utilisateur_session']
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             modificationform = ModificationForm(request.POST)
             # check whether it's valid:
             if modificationform.is_valid():
