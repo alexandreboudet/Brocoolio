@@ -32,11 +32,6 @@ def creation(request):
             todayDate = date.today().strftime("%Y-%m-%d")
             if(photo is not None):
                 photo.name = utilisateur.idUser.username
-<<<<<<< HEAD
-            
-            Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
-=======
->>>>>>> front-Thomas
 
             Projet.objects.create(utilisateur=utilisateur,titre=titre,photo=photo,description=description,cout_estime=cout_estime,estValide=False,date_creation=todayDate,date_validation=todayDate)
             return redirect('/projet/accueil')
