@@ -45,6 +45,12 @@
             {% if creationprojetform.is_valid %}
               <button class="btn btn-sm btn-success">Financer</button>
             {% endif %}
+            {% if bool_displayShowEvalsButton and not bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-success">Afficher les évaluations</button>
+            {% endif %}
+            {% if bool_displayShowEvalsButton and bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-warning">Masquer les évaluations</button>
+            {% endif %}
           {% endif %}
           </div>
         </div>
