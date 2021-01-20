@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import EvaluationProjet
 from .forms import EvaluationProjetForm
 from projet.models import Projet
@@ -43,6 +43,7 @@ def projet(request,id_projet):
             projet.moyenne_evaluation=(projet.moyenne_evaluation*projet.nbr_evaluation+(float(idee)+float(impact_social)+float(budget)+float(calendrier)))/(projet.nbr_evaluation+1)
             projet.nbr_evaluation = projet.nbr_evaluation + 1
             projet.save()
+            return redirect('/projet/affichage/'+ str(id_projet))
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form

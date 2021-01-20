@@ -45,6 +45,12 @@
             {% if creationprojetform.is_valid %}
               <button class="btn btn-sm btn-success">Financer</button>
             {% endif %}
+            {% if bool_displayShowEvalsButton and not bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-success">Afficher les évaluations</button>
+            {% endif %}
+            {% if bool_displayShowEvalsButton and bool_isEvalDisplayed %}
+              <button class="btn btn-sm btn-warning">Masquer les évaluations</button>
+            {% endif %}
           {% endif %}
           </div>
         </div>
@@ -88,8 +94,8 @@
 
 
           {% for commentaire in commentaires %}
-            <div class="row" style="margin:5 5 5 5;">
-              <div class="onhoversurbrillance card rounded shadow-sm border-0">
+            <div class="row" style="margin:20 5 20 5;">
+              <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
                 <div class="card-body p-6">
                   <h5 class="text-dark">{{commentaire.utilisateur.idUser.username}}</h5>
                   <p class="text-muted font-italic">{{commentaire.commentaire}}</p>

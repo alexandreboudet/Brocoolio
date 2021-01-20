@@ -61,6 +61,12 @@ def affichage(request,id_projet):
         bool_evalprojet = False
     else:
         bool_evalprojet = True
+
+    if (evalprojet.exists()):
+        bool_displayShowEvalsButton = True
+    else:
+        bool_displayShowEvalsButton = False
+
     if request.method == 'POST':
         commentaireform = CommentaireForm(request.POST)
         if commentaireform.is_valid():
@@ -84,6 +90,8 @@ def affichage(request,id_projet):
         "commentaireform":commentaireform,
         "commentaires":commentaires,
         "bool_evalprojet":bool_evalprojet,
+        "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
+        "bool_isEvalDisplayed":False,
     }
     return render(request, 'affichage.html', response)
 
