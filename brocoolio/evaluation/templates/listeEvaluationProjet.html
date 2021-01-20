@@ -1,0 +1,18 @@
+{% if listeEvaluationProjet %}
+
+
+  Evaluation du projet {{listeEvaluationProjet.0.projet.titre}} de {{listeEvaluationProjet.0.projet.utilisateur.idUser.username}}
+
+  {% for evaluation in listeEvaluationProjet %}
+<br>
+  {{evaluation.evaluateur.idUser.username}}
+  <br>
+  {{evaluation.commentaire}}
+  <br>
+
+
+  ______________________________________________
+
+
+  {% endfor %}
+{% endif %}
