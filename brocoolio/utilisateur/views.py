@@ -6,6 +6,7 @@ from projet.models import Projet
 from evaluation.models import EvaluationProjet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.sessions.models import Session
 import hashlib
 
 # Create your views here.
@@ -24,6 +25,8 @@ def connexion(request):
                 user = authenticate(request,email=authentification, password=mdp)
             if user is not None:
                 login(request, user)
+                utilisateur = Utilisateur.objects.all().filter(idUser=user.id)[0]
+                request.session['utilisateur_session']=utilisateur.id
                 print('connexion réussi !')
 
 
@@ -43,6 +46,8 @@ def connexion(request):
 
 def deconnexion(request):
     logout(request)
+    Session.objects.all().delete()
+    
     return HttpResponseRedirect("/projet/accueil")
 
 def suppression(request):
@@ -79,20 +84,27 @@ def inscription(request):
     }
     return render(request, 'inscription.html', reponse)
 
-def profil(request):
+def profil(request,id):
     response = {}
     if request.user.is_authenticated:
         if request.session is not None:
-            id = request.user.id
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
+            
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
             EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
             listProjetCount = listProjet.count()
+
+          
+            if(request.session['utilisateur_session'] == id):
+                bool_myprofile = True
+            else:
+                bool_myprofile = False
             
             response['EvaluationCount']=EvaluationCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur
+            response['bool_myprofile']=bool_myprofile
         else:
             print('plus de session')
         return render(request, 'profil.html', response)
@@ -103,7 +115,7 @@ def editionprofil(request):
     if request.user.is_authenticated :
         if request.method == 'POST':
             # create a form instance and populate it with data from the request:
-            id = request.user.id
+            id = request.session['utilisateur_session']
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
             modificationform = ModificationForm(request.POST)
             # check whether it's valid:
@@ -115,7 +127,7 @@ def editionprofil(request):
                 karma_financeur = request.POST.get('karma_financeur')
                 karma_evaluateur = request.POST.get('karma_evaluateur')
                 if(karma_porteur and utilisateur.karma_porteur == 0):
-                    utilisateur.karma_porteur = 7
+                    utilisateur.karma_porteur = 5
                 if(karma_financeur and utilisateur.karma_financeur == 0):
                     utilisateur.karma_financeur = 5
                 if(karma_evaluateur and utilisateur.karma_evaluateur == 0):
@@ -126,6 +138,8 @@ def editionprofil(request):
                 user.set_password(mdp)
                 user.save()
                 utilisateur.save()
+
+                return redirect("/utilisateur/connexion")
 
             else:
                 print('formulaire pas valide')
@@ -147,10 +161,10 @@ def profilprojets(request):
     response = {}
     if request.user.is_authenticated:
         if request.session is not None:
-            id = request.user.id
-            utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
-            listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
-            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
+            id = request.session['utilisateur_session']
+            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+            listProjet = Projet.objects.all().filter(utilisateur_id=utilisateur.idUser).order_by('-date_creation','titre')
+            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=utilisateur.idUser).count()
             listProjetCount = listProjet.count()
             
             response['EvaluationCount']=EvaluationCount
