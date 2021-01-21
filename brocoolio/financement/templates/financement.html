@@ -1,0 +1,9 @@
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{financementprojet.media}}
+    {{ financementprojet.as_p }}
+    <input type="submit" value="Submit">
+</form>
+  
