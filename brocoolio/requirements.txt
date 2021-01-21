@@ -3,3 +3,4 @@ Pillow==7.2.0
 psycopg2==2.8.6
 pytz==2020.4
 sqlparse==0.4.1
+django-simple-captcha==0.5.13
