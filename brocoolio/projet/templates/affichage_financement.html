@@ -3,6 +3,7 @@
 {% load static %}
 {% load humanize %}
 
+
 <style>
   body {
     background: #EEEEEE !important;
@@ -11,12 +12,8 @@
   .onhoversurbrillance:hover {
     background:#EEEEEE;
   }
-
-  .checked {
-    color: green;
-  }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -45,21 +42,7 @@
           </div>
           <div style="float:right;" class="mb-3">
           {% if user.is_authenticated %}
-            {% if projet.id_porteur == user.id %}
-              <button class="btn btn-sm btn-warning">Modifier</button>
-            {% endif %}
-            {% if bool_evalprojet %}
-              <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
-            {% endif %}
-            {% if bool_displayFinanceButton %}
-              <button onclick="window.location.href='/financement/projet/{{projet.id}}';" class="btn btn-sm btn-success">Financer</button>
-            {% endif %}
-            {% if bool_displayShowEvalsButton %}
-              <button onclick="window.location.href='/projet/affichage_eval/{{projet.id}}';" class="btn btn-sm btn-success">Afficher les évaluations</button>
-            {% endif %}
-            {% if bool_displayShowFinancementsButton %}
-              <button onclick="window.location.href='/projet/affichage_financement/{{projet.id}}';" class="btn btn-sm btn-success">Afficher les financements</button>
-            {% endif %}
+            <button onclick="window.location.href='/projet/affichage/{{projet.id}}';" class="btn btn-sm btn-warning">Masquer les financements</button>
           {% endif %}
           </div>
         </div>
@@ -70,11 +53,11 @@
             <h5 class="font-weight-bold mb-0 d-block">{{projet.date_creation}}</h5><small class="text-muted"> <i
                 class="mr-1"></i>Date de création</small>
           </li><li class="list-inline-item" style="margin-left:25px !important;">
-            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime|intcomma}} €</h5><small class="text-muted"> <i
+            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime|intcomma}}€</h5><small class="text-muted"> <i
                 class=" mr-1"></i>Coût estimé</small>
           </li><li class="list-inline-item" style="margin-left:25px !important;">
-            <h5 class="font-weight-bold mb-0 d-block">{{financement_somme.montant__sum|intcomma}} €</h5><small class="text-muted"> <i
-                class=" mr-1"></i>Fonds récoltés</small>
+            <h5 class="font-weight-bold mb-0 d-block">{{financement_somme.montant__sum|intcomma}} €</h5><small class="text-muted">
+              <i class=" mr-1"></i>Fonds récoltés</small>
           </li>
         </ul>
       </div>
@@ -98,35 +81,20 @@
 
       <div class="py-4 px-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
-          <h5 class="mb-0">Commentaires</h5>
+          <h5 class="mb-0">Financements</h5>
         </div>
-        {% for commentaire in commentaires %}
+          {% for financement in financementprojet %}
           <div class="row" style="margin:20 5 20 5;">
             <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
               <div class="card-body p-6">
-                <h5 class="text-dark">{{commentaire.utilisateur.idUser.username}} <small>- <i>{{commentaire.date_publication}}</i></small></h5>
-                <p class="text-muted font-italic">{{commentaire.commentaire}}</p>
+                <h5 class="text-dark">{{financement.financeur.idUser.username}} <small>- <i>{{financement.date_financement}}</i></small></h5>
+                <h4 style="float:right;">{{financement.montant}}</h4>
+                <p class="text-muted font-italic">{{financement.commentaire}}</p>
               </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row py-5 px-4">
-  <div class="mx-auto">
-    <!-- Profile widget -->
-    <div class="bg-white shadow rounded overflow-hidden">
-      <div class="p-4 d-flex justify-content-end text-center">
-        <form action="" method="POST">
-          {% csrf_token %}
-          <div class="form-group">
-            {{ commentaireform.as_p }}
-          </div>
-          <input class="btn btn-md btn-success" type="submit" value="Valider">
-        </form>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
