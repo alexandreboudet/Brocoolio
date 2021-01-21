@@ -11,8 +11,7 @@ class InscriptionForm(forms.Form):
 class ConnexionForm(forms.Form):
     authentification = forms.CharField(label='Pseudo ou mail', max_length=100)
     mdp = forms.CharField(label='Mot de passe',widget=PasswordInput())
-    captcha = CaptchaField()
-
+    
 class ModificationForm(forms.Form):
     pseudo = forms.CharField(label='Pseudo', max_length=100, required=False)
     mail = forms.EmailField(label='Mail', max_length=100, required=False)
