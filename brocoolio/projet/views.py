@@ -49,7 +49,7 @@ def creation(request):
     return render(request, 'creation.html', reponse)
 
 def affichage(request,id_projet):
-    
+
     projet = Projet.objects.all().filter(id=id_projet)[0]
     commentaires = Commentaire.objects.all().filter(projet_id=id_projet)
     evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
@@ -72,8 +72,8 @@ def affichage(request,id_projet):
         if commentaireform.is_valid():
 
             commentaire = request.POST.get('commentaire')
-            
-            
+
+
 
             Commentaire.objects.create(utilisateur=utilisateur,projet=projet,commentaire=commentaire)
 
@@ -83,7 +83,6 @@ def affichage(request,id_projet):
         commentaireform = CommentaireForm ()
 
     commentaireform = CommentaireForm(request.POST)
-
 
     response = {
         "projet":projet,
@@ -98,8 +97,8 @@ def affichage(request,id_projet):
 def accueil(request):
     response = {}
 
-    
-    
+
+
     listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
     listProjetEval = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
     listProjetCount = listProjet.count()
@@ -112,9 +111,9 @@ def accueil(request):
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             if(utilisateur.karma_porteur > 0):
                 bool_porteur = True
-            
-            
-    
+
+
+
     response['bool_porteur']=bool_porteur
     response['listProjet']=listProjet
     response['listProjetEval']=listProjetEval
@@ -139,9 +138,9 @@ def dernierprojets(request):
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             if(utilisateur.karma_porteur > 0):
                 bool_porteur = True
-                
-                
-        
+
+
+
         response['bool_porteur']=bool_porteur
         response['listProjet']=listProjet
         response['listProjetCount']=listProjetCount
@@ -161,8 +160,8 @@ def mieuxevalues(request):
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             if(utilisateur.karma_porteur > 0):
                 bool_porteur = True
-                
-                
+
+
         response['bool_porteur']=bool_porteur
         response['listProjet']=listProjet
         response['listProjetCount']=listProjetCount
@@ -174,12 +173,15 @@ def affichage_eval(request,id_projet) :
 
     projet = Projet.objects.all().filter(id=id_projet)[0]
     evalprojet = EvaluationProjet.objects.all().filter(projet=projet)
+    for eval in evalprojet:
+        eval.moyenneindiv = eval.eval_idee + eval.eval_impact_social + eval.eval_calendrier + eval.eval_budget
+
     response = {
         "projet":projet,
-        "evalprojet":evalprojet,
+        "evalprojet":evalprojet
     }
     return render(request, 'affichage_eval.html', response)
-    
+
 def recherche(request,search):
     response = {}
     if request.session is not None:
