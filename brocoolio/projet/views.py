@@ -87,8 +87,7 @@ def affichage(request,id_projet):
         "commentaireform":commentaireform,
         "commentaires":commentaires,
         "bool_evalprojet":bool_evalprojet,
-        "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
-        "bool_isEvalDisplayed":False,
+        "bool_displayShowEvalsButton":bool_displayShowEvalsButton
     }
     return render(request, 'affichage.html', response)
 
@@ -131,3 +130,13 @@ def mieuxevalues(request):
     else:
         print('plus de session')
     return render(request, 'mieuxevalues.html', response)
+
+def affichage_eval(request,id_projet) :
+
+    projet = Projet.objects.all().filter(id=id_projet)[0]
+    evalprojet = EvaluationProjet.objects.all().filter(projet=projet)
+    response = {
+        "projet":projet,
+        "evalprojet":evalprojet,
+    }
+    return render(request, 'affichage_eval.html', response)
