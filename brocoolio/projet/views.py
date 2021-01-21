@@ -61,6 +61,8 @@ def affichage(request,id_projet):
 
     bool_displayFinanceButton = False
     bool_displayShowFinancementsButton = False
+    bool_evalprojet = False
+    bool_displayShowEvalsButton = False
     if request.user.is_authenticated:
         id = request.session['utilisateur_session']
         evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=id)
