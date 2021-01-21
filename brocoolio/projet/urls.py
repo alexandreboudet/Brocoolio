@@ -8,6 +8,6 @@ urlpatterns = [
     path('accueil', views.accueil, name='accueil'),
     path('dernierprojets', views.dernierprojets, name='dernierprojets'),
     path('mieuxevalues', views.mieuxevalues, name='mieuxevalues'),
-    path('affichage_eval/<int:id_projet>', views.affichage_eval, name='affichage_eval')
-    path('recherche/<search>', views.recherche, name='recherche')
+    path('affichage_eval/<int:id_projet>', views.affichage_eval, name='affichage_eval'),
+    path('recherche/<search>', views.recherche, name='recherche'),
 ]

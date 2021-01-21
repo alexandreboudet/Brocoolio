@@ -14,14 +14,15 @@ def projet(request,id_projet):
     response = {}
     todaysDate = datetime.date.today()
     projet = Projet.objects.all().filter(id=id_projet)[0]
+    print(request.session['utilisateur_session'])
     if not projet:
         raise Http404("Le projet n'existe pas "+str(id_projet))
 
     if(projet.utilisateur_id == request.session['utilisateur_session']):
         raise Http404("Vous ne pouvez pas évaluer votre propre projet "+str(id_projet))
 
-    dejaeval = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
-    if dejaeval is not None:
+    dejaeval = EvaluationProjet.objects.all().filter(projet_id=id_projet,evaluateur_id=request.session['utilisateur_session'])
+    if dejaeval:
         raise Http404("Vous avez déja évaluer ce projet")
 
     if (request.method == 'POST')&(request.user.is_authenticated):
@@ -40,14 +41,29 @@ def projet(request,id_projet):
             id = request.session['utilisateur_session']
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             EvaluationProjet.objects.create(projet=projet,evaluateur=utilisateur,date_evaluation=todaysDate,eval_idee=idee,eval_impact_social=impact_social,eval_calendrier=calendrier,eval_budget=budget,commentaire=commentaire)
+            note = float(idee)+float(impact_social)+float(budget)+float(calendrier)
             projet.moyenne_evaluation=(projet.moyenne_evaluation*projet.nbr_evaluation+(float(idee)+float(impact_social)+float(budget)+float(calendrier)))/(projet.nbr_evaluation+1)
             projet.nbr_evaluation = projet.nbr_evaluation + 1
 
             projet.save()
-            if((projet.nbr_evaluation>=2) & (projet.moyenne_evaluation>=10)):
-                projet.estValide = True
-                projet.save()
+            utilisateur_projet = Utilisateur.objects.all().filter(id=projet.utilisateur_id)[0]
 
+            if((projet.nbr_evaluation==2) & (projet.moyenne_evaluation>=10)):
+                projet.estValide = True
+                utilisateur.karma_evaluateur += 5
+                utilisateur_projet.karma_porteur += 20
+                projet.save()
+            elif ((projet.nbr_evaluation==2) & (projet.moyenne_evaluation<10)):
+                utilisateur_projet.karma_porteur -= 15
+                utilisateur.karma_evaluateur += 5
+            if((projet.nbr_evaluation>2) & (note >= 10)):
+                utilisateur_projet.karma_porteur += 5
+                utilisateur.karma_evaluateur += 5
+            elif((projet.nbr_evaluation>2) & (note < 10)):
+                utilisateur.karma_evaluateur += 5
+                utilisateur_projet.karma_porteur -= 5
+            utilisateur_projet.save()
+            utilisateur.save()
             return redirect('/projet/affichage/'+ str(id_projet))
 
 

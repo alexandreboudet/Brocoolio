@@ -3,6 +3,8 @@ from .models import FinancementProjet
 from .forms import FinancementProjetForm
 from utilisateur.models import Utilisateur
 from projet.models import Projet
+from django.http import Http404
+
 import datetime
 
 import time
@@ -11,9 +13,13 @@ import time
 def financement(request,idProjet):
     response = {}
     todaysDate = datetime.date.today()
-    projet = Projet.objects.all().filter(id=idProjet)[0]
+    projet = Projet.objects.all().filter(id=idProjet)
+    id_utilisateur = request.session['utilisateur_session']
+    dejafinancee = FinancementProjet.objects.all().filter(financeur_id=id_utilisateur,projet_id=idProjet)
     if not projet:
-        raise Http404("Le projet n'existe pas "+str(id_projet))
+        raise Http404("Le projet n'existe pas "+str(idProjet))
+    if dejafinancee:
+        raise Http404("Vous avez déja financé le projet :)")
 
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
@@ -29,7 +35,7 @@ def financement(request,idProjet):
             id = request.user.id
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
 
-            FinancementProjet.objects.create(financeur=utilisateur,projet=projet,montant=montant,commentaire=commentaire,date_financement=date_financement)
+            FinancementProjet.objects.create(financeur=utilisateur,projet=projet[0],montant=montant,commentaire=commentaire,date_financement=date_financement)
 
         else:
             print('formulaire pas valide')
