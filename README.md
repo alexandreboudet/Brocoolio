@@ -30,6 +30,11 @@ https://docs.docker.com/compose/install/
 
 ----------------------------------------------------------------------
 
+Il faut avoir toutes les permissions sur le dossier brocoolio afin de créer des projets, si ce n'est pas le cas faire la commande suivante :
+
+    $ chmod -R 777 brocoolio
+
+
 ## Lancer Brocoolio localement
 
 Se déplacer dans le dossier où se trouve le `docker-compose.yml`
@@ -41,3 +46,4 @@ Ensuite lancer la commande suivante :
 Ensuite aller à l'adresse suivante : 
     
 http://0.0.0.0:8000/utilisateur/connexion
+
