@@ -59,7 +59,8 @@ def affichage(request,id_projet):
     if financement_somme['montant__sum'] is None:
         financement_somme['montant__sum'] = 0
 
-
+    bool_displayFinanceButton = False
+    bool_displayShowFinancementsButton = False
     if request.user.is_authenticated:
         id = request.session['utilisateur_session']
         evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=id)
@@ -74,6 +75,8 @@ def affichage(request,id_projet):
         if(utilisateur.karma_financeur > 0):
             bool_displayFinanceButton = True
 
+        bool_displayShowFinancementsButton = True
+        
         if (evalprojet.exists()):
             bool_displayShowEvalsButton = True
         else:
@@ -102,6 +105,7 @@ def affichage(request,id_projet):
         "commentaires":commentaires,
         "bool_evalprojet":bool_evalprojet,
         "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
+        "bool_displayShowFinancementsButton":bool_displayShowFinancementsButton,
         "bool_displayFinanceButton":bool_displayFinanceButton,
         "financement_somme":financement_somme,
     }
@@ -190,9 +194,15 @@ def affichage_eval(request,id_projet) :
     for eval in evalprojet:
         eval.moyenneindiv = eval.eval_idee + eval.eval_impact_social + eval.eval_calendrier + eval.eval_budget
 
+
+    financement_somme = FinancementProjet.objects.filter(projet_id=id_projet).aggregate(Sum('montant'))
+    if financement_somme['montant__sum'] is None:
+        financement_somme['montant__sum'] = 0
+
     response = {
         "projet":projet,
-        "evalprojet":evalprojet
+        "evalprojet":evalprojet,
+        "financement_somme":financement_somme,
     }
     return render(request, 'affichage_eval.html', response)
 
@@ -206,3 +216,20 @@ def recherche(request,search):
     else:
         print('plus de session')
     return render(request, 'recherche.html', response)
+
+def affichage_financement(request,id_projet) :
+
+    projet = Projet.objects.all().filter(id=id_projet)[0]
+    financementprojet = FinancementProjet.objects.all().filter(projet=projet)
+    
+
+    financement_somme = FinancementProjet.objects.filter(projet_id=id_projet).aggregate(Sum('montant'))
+    if financement_somme['montant__sum'] is None:
+        financement_somme['montant__sum'] = 0
+
+    response = {
+        "projet":projet,
+        "financementprojet":financementprojet,
+        "financement_somme":financement_somme,
+    }
+    return render(request, 'affichage_financement.html', response)
