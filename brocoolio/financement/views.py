@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import FinancementProjet
 from .forms import FinancementProjetForm
 from utilisateur.models import Utilisateur
@@ -33,6 +33,8 @@ def financement(request,idProjet):
             utilisateur = Utilisateur.objects.all().filter(idUser=id)[0]
 
             FinancementProjet.objects.create(financeur=utilisateur,projet=projet[0],montant=montant,commentaire=commentaire,date_financement=date_financement)
+
+            return redirect('/projet/affichage/'+str(idProjet))
 
         else:
             print('formulaire pas valide')
