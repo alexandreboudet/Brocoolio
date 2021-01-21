@@ -11,8 +11,12 @@
   .onhoversurbrillance:hover {
     background:#EEEEEE;
   }
-</style>
 
+  .checked {
+    color: green;
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -32,7 +36,12 @@
               class="rounded mb-2 img-thumbnail">
           </div>
           <div class="media-body mb-5">
-            <h3 class="mt-0 mb-0">{{projet.titre}}</h3>
+            <div class="col-12">
+              <h3 class="mt-0 mb-0">{{projet.titre}}</h3>
+            </div>
+            <div class="col-12">
+              {% include "stars.html" %}
+            </div>
           </div>
           <div style="float:right;" class="mb-3">
           {% if user.is_authenticated %}
@@ -88,18 +97,16 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0">Commentaires</h5>
         </div>
-
-
-          {% for commentaire in commentaires %}
-            <div class="row" style="margin:20 5 20 5;">
-              <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
-                <div class="card-body p-6">
-                  <h5 class="text-dark">{{commentaire.utilisateur.idUser.username}} <small>- <i>{{commentaire.date_commentaire}}</i></small></h5>
-                  <p class="text-muted font-italic">{{commentaire.commentaire}}</p>
-                </div>
+        {% for commentaire in commentaires %}
+          <div class="row" style="margin:20 5 20 5;">
+            <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
+              <div class="card-body p-6">
+                <h5 class="text-dark">{{commentaire.utilisateur.idUser.username}} <small>- <i>{{commentaire.date_publication}}</i></small></h5>
+                <p class="text-muted font-italic">{{commentaire.commentaire}}</p>
               </div>
             </div>
-          {% endfor %}
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>
