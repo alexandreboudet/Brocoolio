@@ -38,7 +38,7 @@
             <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" onmouseover="this.style.color='black'" onmouseout="this.style.color='white'" style="color:white" href="/utilisateur/profil">Profil</a>
+                <a class="nav-link" onmouseover="this.style.color='black'" onmouseout="this.style.color='white'" style="color:white" href="/utilisateur/profil/{{request.session.utilisateur_session}}">Profil</a>
             </li>
             
             <li class="nav-item">
