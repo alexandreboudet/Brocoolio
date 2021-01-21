@@ -1,0 +1,43 @@
+<style>
+  .checked {
+    color: green;
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+{% if projet.moyenne_evaluation >= 4 %}
+    <span class="fa fa-star checked"></span>
+    {% if projet.moyenne_evaluation >= 8 %}
+        <span class="fa fa-star checked"></span>
+        {% if projet.moyenne_evaluation >= 12 %}
+            <span class="fa fa-star checked"></span>
+            {% if projet.moyenne_evaluation >= 16 %}
+                <span class="fa fa-star checked"></span>
+                {% if projet.moyenne_evaluation == 20 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    {% if projet.moyenne_evaluation >= 18 %}
+                        <i class="fa fa-star-half checked"></i>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if projet.moyenne_evaluation >= 14 %}
+                    <i class="fa fa-star-half checked"></i>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if projet.moyenne_evaluation >= 10 %}
+                <i class="fa fa-star-half checked"></i>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if projet.moyenne_evaluation >= 6 %}
+            <i class="fa fa-star-half checked"></i>
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% if projet.moyenne_evaluation >= 2 %}
+        <i class="fa fa-star-half checked"></i>
+    {% endif %}
+{% endif %}
