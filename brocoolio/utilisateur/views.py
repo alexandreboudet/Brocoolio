@@ -48,7 +48,7 @@ def connexion(request):
 def deconnexion(request):
     logout(request)
     Session.objects.all().delete()
-    
+
     return HttpResponseRedirect("/projet/accueil")
 
 def suppression(request):
@@ -89,19 +89,19 @@ def profil(request,id):
     response = {}
     if request.user.is_authenticated:
         if request.session is not None:
-            
+
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
             EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
             FinanceCount = FinancementProjet.objects.all().filter(financeur_id=id).count
             listProjetCount = listProjet.count()
 
-          
+
             if(request.session['utilisateur_session'] == id):
                 bool_myprofile = True
             else:
                 bool_myprofile = False
-            
+
             response['EvaluationCount']=EvaluationCount
             response['FinanceCount']=FinanceCount
             response['listProjet']=listProjet
@@ -123,9 +123,21 @@ def editionprofil(request):
             modificationform = ModificationForm(request.POST)
             # check whether it's valid:
             if modificationform.is_valid():
+                
+                user = request.user
+
                 pseudo = request.POST.get('pseudo')
+                if pseudo != "":
+                    user.username = pseudo
+
                 mail = request.POST.get('mail')
+                if mail != "":
+                    user.email = mail
+
                 mdp = request.POST.get('mdp')
+                if mdp != "":
+                    user.set_password(mdp)
+
                 karma_porteur = request.POST.get('karma_porteur')
                 karma_financeur = request.POST.get('karma_financeur')
                 karma_evaluateur = request.POST.get('karma_evaluateur')
@@ -135,10 +147,6 @@ def editionprofil(request):
                     utilisateur.karma_financeur = 5
                 if(karma_evaluateur and utilisateur.karma_evaluateur == 0):
                     utilisateur.karma_evaluateur = 5
-                user = request.user
-                user.username = pseudo
-                user.email = mail
-                user.set_password(mdp)
                 user.save()
                 utilisateur.save()
 
@@ -169,7 +177,7 @@ def profilprojets(request):
             listProjet = Projet.objects.all().filter(utilisateur_id=utilisateur.idUser).order_by('-date_creation','titre')
             EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=utilisateur.idUser).count()
             listProjetCount = listProjet.count()
-            
+
             response['EvaluationCount']=EvaluationCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount

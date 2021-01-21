@@ -24,6 +24,8 @@ urlpatterns = [
     path('utilisateur/', include('utilisateur.urls')),
     path('financement/', include('financement.urls')),
     path('evaluation/', include('evaluation.urls')),
+    path('captcha/', include('captcha.urls')),
+    path('', include('projet.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

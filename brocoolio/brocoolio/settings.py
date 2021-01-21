@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'financement.apps.FinancementConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'captcha',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
