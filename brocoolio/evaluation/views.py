@@ -21,7 +21,7 @@ def projet(request,id_projet):
         raise Http404("Vous ne pouvez pas évaluer votre propre projet "+str(id_projet))
 
     dejaeval = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
-    if dejaeval is None:
+    if dejaeval is not None:
         raise Http404("Vous avez déja évaluer ce projet")
 
     if (request.method == 'POST')&(request.user.is_authenticated):
