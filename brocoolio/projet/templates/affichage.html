@@ -42,8 +42,8 @@
             {% if bool_evalprojet %}
               <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
             {% endif %}
-            {% if creationprojetform.is_valid %}
-              <button class="btn btn-sm btn-success">Financer</button>
+            {% if bool_displayFinanceButton %}
+              <button onclick="window.location.href='/financement/projet/{{projet.id}}';" class="btn btn-sm btn-success">Financer</button>
             {% endif %}
             {% if bool_displayShowEvalsButton %}
               <button onclick="window.location.href='/projet/affichage_eval/{{projet.id}}';" class="btn btn-sm btn-success">Afficher les évaluations</button>
