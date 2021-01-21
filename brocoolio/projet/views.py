@@ -119,6 +119,7 @@ def accueil(request):
     bool_porteur = False
     utilisateur = 0
 
+
     if request.user.is_authenticated:
         id = request.session['utilisateur_session']
         if(len(Utilisateur.objects.all().filter(id=id)) > 0):
