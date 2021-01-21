@@ -84,7 +84,6 @@ def affichage(request,id_projet):
 
     commentaireform = CommentaireForm(request.POST)
 
-
     response = {
         "projet":projet,
         "commentaireform":commentaireform,
@@ -174,9 +173,12 @@ def affichage_eval(request,id_projet) :
 
     projet = Projet.objects.all().filter(id=id_projet)[0]
     evalprojet = EvaluationProjet.objects.all().filter(projet=projet)
+    for eval in evalprojet:
+        eval.moyenneindiv = eval.eval_idee + eval.eval_impact_social + eval.eval_calendrier + eval.eval_budget
+
     response = {
         "projet":projet,
-        "evalprojet":evalprojet,
+        "evalprojet":evalprojet
     }
     return render(request, 'affichage_eval.html', response)
     
