@@ -52,20 +52,29 @@ def affichage(request,id_projet):
     
     projet = Projet.objects.all().filter(id=id_projet)[0]
     commentaires = Commentaire.objects.all().filter(projet_id=id_projet)
-    evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=request.session['utilisateur_session'])
-    id = request.session['utilisateur_session']
-    utilisateur = Utilisateur.objects.all().filter(id=id)[0]
-    # si evalprojet is not none, alors c'est que l'utilisateur a déja évaluer le projet
 
-    if (projet.utilisateur.idUser_id == request.session['utilisateur_session']) | (evalprojet.exists() | utilisateur.karma_evaluateur == 0):
-        bool_evalprojet = False
-    else:
-        bool_evalprojet = True
+    bool_evalprojet = False
+    bool_displayShowEvalsButton = False
+    bool_displayFinanceButton = False
 
-    if (evalprojet.exists()):
-        bool_displayShowEvalsButton = True
-    else:
-        bool_displayShowEvalsButton = False
+    if request.user.is_authenticated:
+        id = request.session['utilisateur_session']
+        evalprojet = EvaluationProjet.objects.all().filter(evaluateur_id=id)
+        
+        utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+        # si evalprojet is not none, alors c'est que l'utilisateur a déja évaluer le projet
+        if (projet.utilisateur.idUser_id == request.session['utilisateur_session']) | (evalprojet.exists() | utilisateur.karma_evaluateur == 0):
+            bool_evalprojet = False
+        else:
+            bool_evalprojet = True
+        
+        if(utilisateur.karma_financeur > 0):
+            bool_displayFinanceButton = True
+            
+        if (evalprojet.exists()):
+            bool_displayShowEvalsButton = True
+        else:
+            bool_displayShowEvalsButton = False
 
     if request.method == 'POST':
         commentaireform = CommentaireForm(request.POST)
@@ -91,6 +100,7 @@ def affichage(request,id_projet):
         "commentaires":commentaires,
         "bool_evalprojet":bool_evalprojet,
         "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
+        "bool_displayFinanceButton":bool_displayFinanceButton,
         "bool_isEvalDisplayed":False,
     }
     return render(request, 'affichage.html', response)
