@@ -102,6 +102,7 @@ def affichage(request,id_projet):
         "commentaires":commentaires,
         "bool_evalprojet":bool_evalprojet,
         "bool_displayShowEvalsButton":bool_displayShowEvalsButton,
+        "bool_displayFinanceButton":bool_displayFinanceButton,
         "financement_somme":financement_somme,
     }
     return render(request, 'affichage.html', response)

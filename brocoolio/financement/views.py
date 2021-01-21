@@ -15,11 +15,8 @@ def financement(request,idProjet):
     todaysDate = datetime.date.today()
     projet = Projet.objects.all().filter(id=idProjet)
     id_utilisateur = request.session['utilisateur_session']
-    dejafinancee = FinancementProjet.objects.all().filter(financeur_id=id_utilisateur,projet_id=idProjet)
     if not projet:
         raise Http404("Le projet n'existe pas "+str(idProjet))
-    if dejafinancee:
-        raise Http404("Vous avez déja financé le projet :)")
 
     if (request.method == 'POST')&(request.user.is_authenticated):
         # create a form instance and populate it with data from the request:
