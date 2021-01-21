@@ -58,10 +58,7 @@ def affichage(request,id_projet):
     financement_somme = FinancementProjet.objects.filter(projet_id=id_projet).aggregate(Sum('montant'))
     if financement_somme['montant__sum'] is None:
         financement_somme['montant__sum'] = 0
-    if (projet.utilisateur.idUser_id == request.session['utilisateur_session']) | (evalprojet.exists() | utilisateur.karma_evaluateur == 0):
-        bool_evalprojet = False
-    else:
-        bool_evalprojet = True
+
 
     if request.user.is_authenticated:
         id = request.session['utilisateur_session']
