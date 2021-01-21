@@ -92,7 +92,43 @@
             <div class="onhoversurbrillance card rounded shadow-sm border-0 col-md-12">
               <div class="card-body p-6">
                 <h5 class="text-dark">{{evaluation.evaluateur.idUser.username}} <small>- <i>{{evaluation.date_evaluation}}</i></small></h5>
-                <h5 style="float:right;">{% include "stars.html" %}</h5>
+                <h5 style="float:right;">
+                {% if evaluation.moyenneindiv >= 4 %}
+                <span class="fa fa-star checked"></span>
+                {% if evaluation.moyenneindiv >= 8 %}
+                <span class="fa fa-star checked"></span>
+                {% if evaluation.moyenneindiv >= 12 %}
+                <span class="fa fa-star checked"></span>
+                {% if evaluation.moyenneindiv >= 16 %}
+                <span class="fa fa-star checked"></span>
+                {% if evaluation.moyenneindiv == 20 %}
+                <span class="fa fa-star checked"></span>
+                {% else %}
+                {% if evaluation.moyenneindiv >= 18 %}
+                <i class="fa fa-star-half checked"></i>
+                {% endif %}
+                {% endif %}
+                {% else %}
+                {% if evaluation.moyenneindiv >= 14 %}
+                <i class="fa fa-star-half checked"></i>
+                {% endif %}
+                {% endif %}
+                {% else %}
+                {% if evaluation.moyenneindiv >= 10 %}
+                <i class="fa fa-star-half checked"></i>
+                {% endif %}
+                {% endif %}
+                {% else %}
+                {% if evaluation.moyenneindiv >= 6 %}
+                <i class="fa fa-star-half checked"></i>
+                {% endif %}
+                {% endif %}
+                {% else %}
+                {% if evaluation.moyenneindiv >= 2 %}
+                <i class="fa fa-star-half checked"></i>
+                {% endif %}
+                {% endif %}
+                </h5>
                 <p class="text-muted font-italic">{{evaluation.commentaire}}</p>
               </div>
             </div>
