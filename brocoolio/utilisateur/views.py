@@ -73,6 +73,8 @@ def inscription(request):
             user.save()
             Utilisateur.objects.create(idUser=user,estValide=False,img_profil=img_profil
                                        ,date_creation='1805-02-12',karma_porteur=0,karma_evaluateur=0,karma_financeur=0)
+                        
+            return redirect("/utilisateur/connexion")
         else:
             print('formulaire pas valide')
     # if a GET (or any other method) we'll create a blank form
@@ -150,7 +152,7 @@ def editionprofil(request):
                 user.save()
                 utilisateur.save()
 
-                return redirect("/utilisateur/connexion")
+                return redirect("/projet/accueil")
 
             else:
                 print('formulaire pas valide')
@@ -174,14 +176,16 @@ def profilprojets(request):
         if request.session is not None:
             id = request.session['utilisateur_session']
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
-            listProjet = Projet.objects.all().filter(utilisateur_id=utilisateur.idUser).order_by('-date_creation','titre')
-            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=utilisateur.idUser).count()
+            listProjet = Projet.objects.all().filter(utilisateur_id=utilisateur.id).order_by('-date_creation','titre')
+            EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=utilisateur.id).count()
             listProjetCount = listProjet.count()
+            FinanceCount = FinancementProjet.objects.all().filter(financeur_id=id).count
 
             response['EvaluationCount']=EvaluationCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur
+            response['FinanceCount']=FinanceCount
         else:
             print('plus de session')
         return render(request, 'profilprojets.html', response)

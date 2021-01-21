@@ -147,16 +147,17 @@ def accueil(request):
 def dernierprojets(request):
     response = {}
     if request.session is not None:
-        id = request.session['utilisateur_session']
+        
         listProjet = Projet.objects.all().filter(estValide=1).order_by('-date_creation','titre')
         listProjetCount = listProjet.count()
         bool_porteur = False
 
-
-        if(len(Utilisateur.objects.all().filter(id=id)) > 0):
-            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
-            if(utilisateur.karma_porteur > 0):
-                bool_porteur = True
+        if request.user.is_authenticated:
+            id = request.session['utilisateur_session']
+            if(len(Utilisateur.objects.all().filter(id=id)) > 0):
+                utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+                if(utilisateur.karma_porteur > 0):
+                    bool_porteur = True
 
 
 
@@ -170,15 +171,16 @@ def dernierprojets(request):
 def mieuxevalues(request):
     response = {}
     if request.session is not None:
-        id = request.session['utilisateur_session']
         listProjet = Projet.objects.all().filter(estValide=1).order_by('-moyenne_evaluation','-date_creation','titre')
         listProjetCount = listProjet.count()
         bool_porteur = False
 
-        if(len(Utilisateur.objects.all().filter(id=id)) > 0):
-            utilisateur = Utilisateur.objects.all().filter(id=id)[0]
-            if(utilisateur.karma_porteur > 0):
-                bool_porteur = True
+        if request.user.is_authenticated:
+            id = request.session['utilisateur_session']
+            if(len(Utilisateur.objects.all().filter(id=id)) > 0):
+                utilisateur = Utilisateur.objects.all().filter(id=id)[0]
+                if(utilisateur.karma_porteur > 0):
+                    bool_porteur = True
 
 
         response['bool_porteur']=bool_porteur
@@ -210,7 +212,7 @@ def affichage_eval(request,id_projet) :
 def recherche(request,search):
     response = {}
     if request.session is not None:
-        id = request.session['utilisateur_session']
+       
         listProjet = Projet.objects.all().filter(estValide=1,titre__contains=search).order_by('-moyenne_evaluation','-date_creation','titre')
 
         response['listProjet']=listProjet
