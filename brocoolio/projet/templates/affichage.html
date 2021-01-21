@@ -1,7 +1,7 @@
 {% extends "navbar.html" %}
 {% block content %}
 {% load static %}
-
+{% load humanize %}
 
 <style>
   body {
@@ -51,8 +51,8 @@
             {% if bool_evalprojet %}
               <button onclick="window.location.href='/evaluation/projet/{{projet.id}}';"class="btn btn-sm btn-success">Évaluer</button>
             {% endif %}
-            {% if creationprojetform.is_valid %}
-              <button class="btn btn-sm btn-success">Financer</button>
+            {% if bool_displayFinanceButton %}
+              <button onclick="window.location.href='/financement/projet/{{projet.id}}';" class="btn btn-sm btn-success">Financer</button>
             {% endif %}
             {% if bool_displayShowEvalsButton %}
               <button onclick="window.location.href='/projet/affichage_eval/{{projet.id}}';" class="btn btn-sm btn-success">Afficher les évaluations</button>
@@ -67,10 +67,10 @@
             <h5 class="font-weight-bold mb-0 d-block">{{projet.date_creation}}</h5><small class="text-muted"> <i
                 class="mr-1"></i>Date de création</small>
           </li><li class="list-inline-item" style="margin-left:25px !important;">
-            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime}}€</h5><small class="text-muted"> <i
+            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime|intcomma}} €</h5><small class="text-muted"> <i
                 class=" mr-1"></i>Coût estimé</small>
           </li><li class="list-inline-item" style="margin-left:25px !important;">
-            <h5 class="font-weight-bold mb-0 d-block">{{projet.cout_estime}}€</h5><small class="text-muted"> <i
+            <h5 class="font-weight-bold mb-0 d-block">{{financement_somme.montant__sum|intcomma}} €</h5><small class="text-muted"> <i
                 class=" mr-1"></i>Fonds récoltés</small>
           </li>
         </ul>

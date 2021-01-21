@@ -4,6 +4,7 @@ from .forms import InscriptionForm,ConnexionForm, ModificationForm
 from .models import Utilisateur
 from projet.models import Projet
 from evaluation.models import EvaluationProjet
+from financement.models import FinancementProjet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.sessions.models import Session
@@ -92,6 +93,7 @@ def profil(request,id):
             utilisateur = Utilisateur.objects.all().filter(id=id)[0]
             listProjet = Projet.objects.all().filter(utilisateur_id=id).order_by('-date_creation','titre')
             EvaluationCount = EvaluationProjet.objects.all().filter(evaluateur_id=id).count()
+            FinanceCount = FinancementProjet.objects.all().filter(financeur_id=id).count
             listProjetCount = listProjet.count()
 
           
@@ -101,6 +103,7 @@ def profil(request,id):
                 bool_myprofile = False
             
             response['EvaluationCount']=EvaluationCount
+            response['FinanceCount']=FinanceCount
             response['listProjet']=listProjet
             response['listProjetCount']=listProjetCount
             response['utilisateur']=utilisateur
